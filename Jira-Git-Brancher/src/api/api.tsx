@@ -2,9 +2,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const generateBranchNames = async (jiraId: string, jiraDescription: string) => {
     try {
-      // const apiKey = import.meta.env.GEMINI_API_KEY; 
-      const apiKey = "AIzaSyB1psSTNsuknr8n9LhO2Kk8dkfqhxbHTdg"; 
-  
+      const apiKey = import.meta.env.GEMINI_API_KEY; 
+      
       if (!apiKey) {
         throw new Error('API key is not defined');
       }
