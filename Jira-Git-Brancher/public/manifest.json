@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "JiraGit Brancher",
+    "description": "Instant Git feature branch name creator for JIRA issues",
+    "version": "1.0.0",
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "scripting"
+    ],
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ],
+    "icons": {
+        "16": "16x16.png",
+        "48": "48x48.png",
+        "128": "128x128.png"
+    }
+  }

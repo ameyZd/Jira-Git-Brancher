@@ -1,0 +1,10 @@
+.custom-card {
+    background-color: #579DFF;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-card:hover {
+    background-color: #85B8FF;
+  }
+  
