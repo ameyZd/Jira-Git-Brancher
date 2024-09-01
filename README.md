@@ -10,4 +10,4 @@
 <b>3. 📋 Copy to Clipboard</b>: Simply click on the generated branch name to copy it to your clipboard.
 
 <h2>🎥 Working</h2>
-<p>Demo video to watch the working of Jira-Git-Brancher! <a href="https://www.awesomescreenshot.com/video/31072875?key=0c8608b1d3be7404a3926656c0b6cdfc" target="_blank">Watch the demo here</a>.</p>
+<p>Demo video to watch the working of Jira-Git-Brancher! <a href="https://drive.google.com/file/d/1p-wv_niJwsAotG5VJQxLli08A9ZmEun3/view?usp=sharing" target="_blank">Watch the demo here</a>.</p>
