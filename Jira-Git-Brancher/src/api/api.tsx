@@ -3,8 +3,8 @@ import { message } from 'antd';
 
 const generateBranchNames = async (jiraId: string, jiraDescription: string) => {
     try {
-      const apiKey = import.meta.env.GEMINI_API_KEY; 
-      
+     const apiKey = import.meta.env.GEMINI_API_KEY; 
+     
       if (!apiKey) {
         throw new Error('API key is not defined');
       }
@@ -37,7 +37,7 @@ const generateBranchNames = async (jiraId: string, jiraDescription: string) => {
       return branchNamesArray; 
 
     } catch (error) {
-      message.error("Error generating branch names:");
+      message.error("Error generating branch names");
       return [];
     }
   };

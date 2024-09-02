@@ -15,6 +15,14 @@ function App() {
         throw new Error('Tab ID is undefined');
       }
 
+      const url = new URL(tab.url || '');
+      const isAtlassianJiraPage = url.hostname.endsWith('atlassian.net');
+
+      if (!isAtlassianJiraPage) {
+        message.warning(`Please ensure you're on the Atlassian Jira site.`);
+        return;
+      }
+
       chrome.scripting.executeScript({
         target: { tabId: tab.id },
         func: () => {
@@ -35,6 +43,9 @@ function App() {
           const { jiraId, jiraDescription } = result.result;
           const branchNamesArray = await generateBranchNames(jiraId, jiraDescription);
           setBranchNames(branchNamesArray);  
+          if(branchNamesArray.length == 0){
+            message.warning(`Please ensure you're on the Atlassian Jira site.`);
+          }
 
         } else {
           message.warning(`Please ensure you're on the Atlassian Jira site.`);
@@ -42,7 +53,7 @@ function App() {
       });
 
     } catch (error) {
-      message.error("Error fetching branch name:");
+      message.error("Error fetching branch name");
     }
   };
 
