@@ -2,6 +2,7 @@ import './App.css';
 import { useState } from 'react';
 import GitBranchCardList from './components/gitBranchCardList/gitBranchCardList';
 import generateBranchNames from './api/api.tsx';
+import { message } from 'antd';
 
 function App() {
   const [branchNames, setBranchNames] = useState<string[]>([]); // State to store branch names
@@ -17,7 +18,6 @@ function App() {
       chrome.scripting.executeScript({
         target: { tabId: tab.id },
         func: () => {
-          console.log("Script is running in the active tab");
           const jiraIdElements = document.getElementsByClassName("_6v24qk37 _9jddv77o css-1k1n5w1");
           const jiraDescriptionElements = document.getElementsByClassName("_1wyb1tcg _vwz41f4h _k48pbfng _1dyzz5jk _1bsb1osq _19pkidpf _2hwxidpf _otyridpf _18u0idpf _ca0qidpf _u5f3idpf _n3tdidpf _19bvidpf _syaz1fxt _osi5fg65 _mc2h1hna _14fy1hna");
 
@@ -26,7 +26,6 @@ function App() {
             const jiraDescription = (jiraDescriptionElements[0] as HTMLElement).textContent || (jiraDescriptionElements[0] as HTMLElement).innerText;
             return { jiraId, jiraDescription };
           } else {
-            console.log("No Jira elements found");
             return null;
           }
         }
@@ -38,12 +37,12 @@ function App() {
           setBranchNames(branchNamesArray);  
 
         } else {
-          alert("Are you sure you are at the right place? 😏");
+          message.warning(`Please ensure you're on the Atlassian Jira site.`);
         }
       });
 
     } catch (error) {
-      console.error("Error fetching branch name:", error);
+      message.error("Error fetching branch name:");
     }
   };
 

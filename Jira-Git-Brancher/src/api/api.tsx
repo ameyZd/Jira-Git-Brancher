@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { message } from 'antd';
 
 const generateBranchNames = async (jiraId: string, jiraDescription: string) => {
     try {
@@ -36,7 +37,7 @@ const generateBranchNames = async (jiraId: string, jiraDescription: string) => {
       return branchNamesArray; 
 
     } catch (error) {
-      console.error("Error generating branch names:", error);
+      message.error("Error generating branch names:");
       return [];
     }
   };
