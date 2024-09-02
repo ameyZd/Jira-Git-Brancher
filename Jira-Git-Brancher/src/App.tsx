@@ -5,7 +5,7 @@ import generateBranchNames from './api/api.tsx';
 import { message } from 'antd';
 
 function App() {
-  const [branchNames, setBranchNames] = useState<string[]>([]); // State to store branch names
+  const [branchNames, setBranchNames] = useState<string[]>([]); 
 
   const getJiraIssueDetails = async () => {
     try {
