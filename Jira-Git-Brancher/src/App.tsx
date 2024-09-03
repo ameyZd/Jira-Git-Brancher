@@ -2,10 +2,11 @@ import './App.css';
 import { useState } from 'react';
 import GitBranchCardList from './components/gitBranchCardList/gitBranchCardList';
 import generateBranchNames from './api/api.tsx';
-import { message } from 'antd';
+import { message, Tooltip } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 function App() {
-  const [branchNames, setBranchNames] = useState<string[]>([]); 
+  const [branchNames, setBranchNames] = useState<string[]>([]);
 
   const getJiraIssueDetails = async () => {
     try {
@@ -42,8 +43,8 @@ function App() {
         if (result && result.result) {
           const { jiraId, jiraDescription } = result.result;
           const branchNamesArray = await generateBranchNames(jiraId, jiraDescription);
-          setBranchNames(branchNamesArray);  
-          if(branchNamesArray.length == 0){
+          setBranchNames(branchNamesArray);
+          if (branchNamesArray.length == 0) {
             message.warning(`Please ensure you're on the Atlassian Jira site.`);
           }
 
@@ -64,11 +65,24 @@ function App() {
         <img src="https://i.ibb.co/8MXQ2GL/jira-XGhub.png" alt="Jira and Github Image" style={{ width: '75px', height: '100px', marginBottom: '20px' }} />
 
         <button onClick={getJiraIssueDetails}>Get feature branch names for this issue</button>
+        <br />
+
       </div>
 
       <div>
         {branchNames.length > 0 ? (
-          <GitBranchCardList branchNames={branchNames} />
+          <>
+
+            <GitBranchCardList branchNames={branchNames} />
+            <Tooltip
+              title="If you're not satisfied with the response, please click the button again."
+              placement="bottom"
+              overlayStyle={{ fontSize: '12px', maxWidth: '200px' }}
+            >
+              <InfoCircleOutlined style={{ fontSize: '16px', color: '#1890ff', marginLeft: '8px' }} />
+            </Tooltip>
+          </>
+
         ) : null}
       </div>
     </div>
