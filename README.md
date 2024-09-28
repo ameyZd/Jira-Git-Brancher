@@ -11,3 +11,6 @@
 
 <h2>🎥 Working</h2>
 <p>Demo video to watch the working of Jira-Git-Brancher! <a href="https://drive.google.com/file/d/1p-wv_niJwsAotG5VJQxLli08A9ZmEun3/view?usp=sharing" target="_blank">Watch the demo here</a>.</p>
+
+<h2>⬇️ Extension Installation Link</h2>
+<a href="https://chromewebstore.google.com/detail/jiragit-brancher/hmdepjejacbaehidilofgpelpflmigdi?authuser=2&hl=en" target="_blank">Download</a></p>
