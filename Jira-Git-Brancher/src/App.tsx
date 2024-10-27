@@ -2,13 +2,15 @@ import './App.css';
 import { useState } from 'react';
 import GitBranchCardList from './components/gitBranchCardList/gitBranchCardList';
 import generateBranchNames from './api/api.tsx';
-import { message, Tooltip } from 'antd';
+import { message, Tooltip, Spin } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 
 function App() {
   const [branchNames, setBranchNames] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);  
 
   const getJiraIssueDetails = async () => {
+    setLoading(true);  
     try {
       let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
@@ -21,6 +23,7 @@ function App() {
 
       if (!isAtlassianJiraPage) {
         message.warning(`Please ensure you're on the Atlassian Jira site.`);
+        setLoading(false);  
         return;
       }
 
@@ -28,7 +31,7 @@ function App() {
         target: { tabId: tab.id },
         func: () => {
           const jiraIdElements = document.getElementsByClassName("_6v24qk37 _9jddv77o css-1k1n5w1");
-          const jiraDescriptionElements = document.getElementsByClassName("_1wyb1tcg _vwz41f4h _k48pbfng _1dyzz5jk _1bsb1osq _19pkidpf _2hwxidpf _otyridpf _18u0idpf _ca0qidpf _u5f3idpf _n3tdidpf _19bvidpf _syaz1fxt _osi5fg65 _mc2h1hna _14fy1hna");
+          const jiraDescriptionElements = document.getElementsByClassName("_1e0c1txw _vwz4kb7n _p12f1osq _1nmz1hna _ca0q12x7 _n3td12x7 _kqswh2mm _1ltv12x7 _1p9sz5jk");
 
           if (jiraIdElements.length > 0 && jiraDescriptionElements.length > 0) {
             const jiraId = (jiraIdElements[2] as HTMLElement).textContent || (jiraIdElements[2] as HTMLElement).innerText;
@@ -44,35 +47,34 @@ function App() {
           const { jiraId, jiraDescription } = result.result;
           const branchNamesArray = await generateBranchNames(jiraId, jiraDescription);
           setBranchNames(branchNamesArray);
-          if (branchNamesArray.length == 0) {
-            message.warning(`Please ensure you're on the Atlassian Jira site.`);
+          if (branchNamesArray.length === 0) {
+            message.warning(`No branch names generated. Please check your Jira issue.`);
           }
-
         } else {
-          message.warning(`Please ensure you're on the Atlassian Jira site.`);
+          message.warning(`Could not retrieve Jira details.`);
         }
+        setLoading(false);  
       });
 
     } catch (error) {
       message.error("Error fetching branch name");
+      setLoading(false); 
     }
   };
 
   return (
     <div>
-
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <img src="https://i.ibb.co/8MXQ2GL/jira-XGhub.png" alt="Jira and Github Image" style={{ width: '75px', height: '100px', marginBottom: '20px' }} />
-
         <button onClick={getJiraIssueDetails}>Get feature branch names for this issue</button>
         <br />
-
       </div>
 
       <div>
-        {branchNames.length > 0 ? (
+        {loading ? (
+          <Spin tip="Loading branch names..." />  
+        ) : branchNames.length > 0 ? (
           <>
-
             <GitBranchCardList branchNames={branchNames} />
             <Tooltip
               title="If you're not satisfied with the response, please click the button again."
@@ -82,7 +84,6 @@ function App() {
               <InfoCircleOutlined style={{ fontSize: '16px', color: '#1890ff', marginLeft: '8px' }} />
             </Tooltip>
           </>
-
         ) : null}
       </div>
     </div>

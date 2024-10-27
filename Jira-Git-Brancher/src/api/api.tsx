@@ -28,12 +28,13 @@ const generateBranchNames = async (jiraId: string, jiraDescription: string) => {
       });
 
       const result = await chatSession.sendMessage(`
-        Create 4-5 succinct branch names for Jira ID: ${jiraId} and Jira description: "${jiraDescription}". 
-        Provide branch names in the format:jira-id-{brief description} like sce-1657-FeatureName\nainba-789-featurename. 
-        Only return the branch names with no additional symbols, characters, or text.
-        `);
+        Create 6 (SIX) succinct branch names for Jira ID: ${jiraId} and Jira description: "${jiraDescription}". 
+        Provide the branch names in a JSON array format without additional starting special symbols, characters, irrelevant text, or blank space.
+        (example, sce-1657-FeatureName, ainba-789-featurename) 
+        Ensure the branch names are in small case letters, also dont give enclose name in quotes.
+      `);
 
-      const branchNamesArray = result.response.text().trim().split('\n'); 
+      const branchNamesArray = result.response.text().trim().split(','); 
       return branchNamesArray; 
 
     } catch (error) {

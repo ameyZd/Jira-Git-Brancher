@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "JiraGit Brancher",
     "description": "Instant Git feature branch name creator for JIRA issues",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "action": {
         "default_popup": "index.html"
     },
