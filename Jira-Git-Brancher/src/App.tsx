@@ -30,9 +30,9 @@ function App() {
       chrome.scripting.executeScript({
         target: { tabId: tab.id },
         func: () => {
-          const jiraIdElements = document.getElementsByClassName("_6v24qk37 _9jddv77o css-1k1n5w1");
-          const jiraDescriptionElements = document.getElementsByClassName("_1e0c1txw _vwz4kb7n _p12f1osq _1nmz1hna _ca0q12x7 _n3td12x7 _kqswh2mm _1ltv12x7 _1p9sz5jk");
-
+          const jiraIdElements = document.getElementsByClassName("css-1gd7hga");
+          const jiraDescriptionElements = document.getElementsByClassName("css-1buvxpt");
+          
           if (jiraIdElements.length > 0 && jiraDescriptionElements.length > 0) {
             const jiraId = (jiraIdElements[2] as HTMLElement).textContent || (jiraIdElements[2] as HTMLElement).innerText;
             const jiraDescription = (jiraDescriptionElements[0] as HTMLElement).textContent || (jiraDescriptionElements[0] as HTMLElement).innerText;
