@@ -31,7 +31,7 @@ function App() {
         target: { tabId: tab.id },
         func: () => {
           const jiraIdElements = document.getElementsByClassName("css-1gd7hga");
-          const jiraDescriptionElements = document.getElementsByClassName("css-1buvxpt");
+          const jiraDescriptionElements = document.getElementsByClassName("_11c81p5s _19pkidpf _2hwxidpf _otyridpf _18u0idpf _ca0qidpf _u5f3idpf _n3tdidpf _19bvidpf _1bsb1osq _syaz1fxt _osi5fg65 _mc2h1hna _14fy1hna");
           
           if (jiraIdElements.length > 0 && jiraDescriptionElements.length > 0) {
             const jiraId = (jiraIdElements[2] as HTMLElement).textContent || (jiraIdElements[2] as HTMLElement).innerText;
