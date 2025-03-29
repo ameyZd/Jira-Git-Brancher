@@ -4,6 +4,8 @@ import GitBranchCardList from './components/gitBranchCardList/gitBranchCardList'
 import generateBranchNames from './api/api.tsx';
 import { message, Tooltip, Spin } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import jiraGitLogo from './assets/jiraGitLogo.png';
+
 
 function App() {
   const [branchNames, setBranchNames] = useState<string[]>([]);
@@ -27,34 +29,48 @@ function App() {
         return;
       }
 
-      chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        func: () => {
-          const jiraIdElements = document.getElementsByClassName("css-1gd7hga");
-          const jiraDescriptionElements = document.getElementsByClassName("_1mouidpf _1dyz4jg8 _1p1dglyw _11c81p5s _syaz1fxt");
-          
-          if (jiraIdElements.length > 0 && jiraDescriptionElements.length > 0) {
-            const jiraId = (jiraIdElements[2] as HTMLElement).textContent || (jiraIdElements[2] as HTMLElement).innerText;
-            const jiraDescription = (jiraDescriptionElements[0] as HTMLElement).textContent || (jiraDescriptionElements[0] as HTMLElement).innerText;
-            return { jiraId, jiraDescription };
-          } else {
-            return null;
+      chrome.scripting.executeScript(
+        {
+          target: { tabId: tab.id },
+          func: () => {
+            const jiraIdElement = document.querySelector('a[data-testid="issue.views.issue-base.foundation.breadcrumbs.current-issue.item"] span.css-1gd7hga');
+            const jiraDescriptionElement = document.querySelector('h1[data-testid="issue.views.issue-base.foundation.summary.heading"]');
+      
+            if (jiraIdElement && jiraDescriptionElement) {
+              const jiraId = jiraIdElement.textContent?.trim() ?? (jiraIdElement as HTMLElement).innerText?.trim() ?? '';
+              const jiraDescription = jiraDescriptionElement.textContent?.trim() ?? (jiraDescriptionElement as HTMLElement).innerText?.trim() ?? '';
+                    
+              return { jiraId, jiraDescription };
+            } else {
+              console.error("Jira ID or Jira Description not found!");
+              return null;
+            }
+          },
+        },
+        async (injectionResults) => {
+          if (!injectionResults || injectionResults.length === 0 || !injectionResults[0].result) {
+            message.warning(`Could not retrieve Jira details.`);
+            setLoading(false);
+            return;
           }
-        }
-      }, async (injectionResults) => {
-        const [result] = injectionResults;
-        if (result && result.result) {
-          const { jiraId, jiraDescription } = result.result;
-          const branchNamesArray = await generateBranchNames(jiraId, jiraDescription);
-          setBranchNames(branchNamesArray);
-          if (branchNamesArray.length === 0) {
-            message.warning(`No branch names generated. Please check your Jira issue.`);
+      
+          const { jiraId, jiraDescription } = injectionResults[0].result;
+      
+          try {
+            const branchNamesArray = await generateBranchNames(jiraId, jiraDescription);
+            setBranchNames(branchNamesArray);
+      
+            if (branchNamesArray.length === 0) {
+              message.warning(`No branch names generated. Please check your Jira issue.`);
+            }
+          } catch (error) {
+            console.error("Error generating branch names:", error);
+            message.error(`Failed to generate branch names.`);
           }
-        } else {
-          message.warning(`Could not retrieve Jira details.`);
+      
+          setLoading(false);
         }
-        setLoading(false);  
-      });
+      );
 
     } catch (error) {
       message.error("Error fetching branch name");
@@ -65,7 +81,7 @@ function App() {
   return (
     <div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <img src="https://i.ibb.co/8MXQ2GL/jira-XGhub.png" alt="Jira and Github Image" style={{ width: '75px', height: '100px', marginBottom: '20px' }} />
+        <img src={jiraGitLogo} alt="Jira and Github Image" style={{ width: '75px', height: '100px', marginBottom: '20px' }} />
         <button onClick={getJiraIssueDetails}>Get feature branch names for this issue</button>
         <br />
       </div>
