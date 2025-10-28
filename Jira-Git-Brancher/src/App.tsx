@@ -82,7 +82,7 @@ function App() {
     <div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <img src={jiraGitLogo} alt="Jira and Github Image" style={{ width: '75px', height: '100px', marginBottom: '20px' }} />
-        <button onClick={getJiraIssueDetails}>Get feature branch names for this issue</button>
+        <button onClick={getJiraIssueDetails}>Get feature branch names for this task</button>
         <br />
       </div>
 

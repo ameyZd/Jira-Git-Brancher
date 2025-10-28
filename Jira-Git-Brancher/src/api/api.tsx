@@ -11,7 +11,7 @@ const generateBranchNames = async (jiraId: string, jiraDescription: string) => {
       const genAI = new GoogleGenerativeAI(apiKey);
 
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-2.5-flash",
       });
 
       const generationConfig = {
@@ -28,10 +28,10 @@ const generateBranchNames = async (jiraId: string, jiraDescription: string) => {
       });
 
       const result = await chatSession.sendMessage(`
-        Create 6 (SIX) succinct branch names for Jira ID: ${jiraId} and Jira description: "${jiraDescription}". 
-        Provide the branch names in a JSON array format without additional starting special symbols, characters, irrelevant text, or blank space.
-        (example, sce-1657-FeatureName, ainba-789-featurename) 
-        Ensure the branch names are in small case letters, also dont give enclose name in quotes.
+        Create 6 (SIX) succinct branch names for Jira ID: ${jiraId} and Jira description: "${jiraDescription}".
+        Provide ONLY the branch names as a comma-separated list, without any quotes, brackets, or special symbols.
+        Each branch name should follow the pattern like: sce-1657-feature-name or ainba-789-featurename.
+        Ensure all branch names are lowercase and relevant to the Jira ID and description.
       `);
 
       const branchNamesArray = result.response.text().trim().split(','); 
